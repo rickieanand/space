@@ -1,24 +1,44 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+const svgson = require('svgson-next')
+
+//const svgson2 = require('svgson')
 
 class App extends Component {
+  constructor() {
+		super()
+    this.inputHandler= this.inputHandler.bind(this)
+    this.getJson= this.getJson.bind(this)
+    this.svg=''
+  }
+
+  inputHandler(e) {
+    console.log('-->', e.currentTarget.value)
+    this.setState({svg: e.currentTarget.value, json: {}})
+  }
+  getJson() {
+    // ----------------------------
+    // Convert SVG to JSON AST
+    // ----------------------------
+    svgson
+    .parse(
+      `${this.state.svg}`
+    )
+    .then(function(json) {
+      console.log(JSON.stringify(json, null, 2))
+  // -------------------------------
+  // Convert JSON AST back to SVG
+  // -------------------------------
+//  mysvg = svgson.stringify(json)
+  /* returns the SVG as string */
+})
+  }
   render() {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
+          <textarea name='svgText' onChange={this.inputHandler}/>
+          <button onClick={this.getJson}>Get Json</button>
         </header>
       </div>
     );
